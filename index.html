@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fc">
+  <meta name="description" content="TinyPaper: Vietnamese TinyLLM on ESP32-S3. An evidence-grounded preprint and interactive research website with benchmark explorer, memory calculator and semantic demo.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TinyPaper · TinyLLM tiếng Việt trên ESP32-S3">
+  <meta property="og:description" content="Preprint · Methods · Semantics · Benchmarks · TinyLLM models · Interactive demos">
+  <meta property="og:url" content="https://xulytiengviet.github.io/Tinypaper/">
+  <title>TinyPaper — TinyLLM tiếng Việt trên ESP32-S3 · Research Project</title>
+  <link rel="canonical" href="https://xulytiengviet.github.io/Tinypaper/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%231e3258'/%3E%3Cpath d='M15 21h34M32 21v25M21 46h22' fill='none' stroke='%23f5bb69' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#19283f;--muted:#5d6d83;--light:#8291a5;--line:#e4eaf1;--paper:#fff;--bg:#f7f8fc;--navy:#203b69;--blue:#416ce1;--aqua:#def5f1;--aqua-ink:#247b73;--orange:#ffb461;--lilac:#ebe7ff;--radius:19px;--shadow:0 15px 46px rgba(30,56,99,.06)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:82px}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",Arial,sans-serif;font-size:15px;line-height:1.7}a{color:var(--navy);text-decoration:none}a:hover{color:var(--blue)}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:3px}button,input,textarea{font:inherit}button{cursor:pointer}::selection{background:#dbedff}section[id],article[id]{scroll-margin-top:85px}
+    .container{width:min(1160px,calc(100% - 48px));margin:auto}.section{padding:96px 0;border-top:1px solid #eef1f5}.bg-soft{background:linear-gradient(165deg,#f8faff,#fbfbfe)}.kicker{display:inline-flex;gap:9px;align-items:center;text-transform:uppercase;font-size:11px;letter-spacing:.17em;font-weight:800;color:#5476a5}.kicker:before{content:"";width:23px;height:2px;background:var(--orange)}h1,h2,h3,h4{font-family:Manrope,"DM Sans",Arial,sans-serif;line-height:1.25;letter-spacing:-.045em}h1{font-size:clamp(37px,5.35vw,71px);margin:24px 0 22px;font-weight:800}h2{font-size:clamp(29px,3.6vw,44px);margin:13px 0 15px;font-weight:800}h3{font-size:21px;margin:12px 0}p{margin:0 0 18px}.lead{font-size:18px;color:var(--muted);line-height:1.85;max-width:770px}.tiny{font-size:12px;color:var(--muted)}.muted{color:var(--muted)}.strong{font-weight:700}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#5974a2}.section-head{max-width:800px;margin-bottom:35px}.section-head p{font-size:16px;color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:100px;background:#edf1fc;color:#42629a;font-size:11px;font-weight:800;letter-spacing:.04em}.pill.warn{background:#fff1df;color:#9e5d12}.pill.ok{background:#e6f8ef;color:#23785b}.pill.muted-pill{background:#f1f2f5;color:#68748b}
+    .site-header{height:72px;position:sticky;top:0;background:#fffffff2;backdrop-filter:blur(18px);z-index:20;border-bottom:1px solid #e8ecf3}.header-in{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:inline-flex;align-items:center;gap:10px;font-family:Manrope,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.05em;color:var(--ink);white-space:nowrap}.brand-mark{display:grid;place-items:center;width:35px;height:35px;border-radius:10px;color:white;background:linear-gradient(135deg,#244474,#466dc1);font-size:22px}.brand em{font-style:normal;color:#6388d6}.top-nav{display:flex;align-items:center;gap:23px;overflow:auto;white-space:nowrap;scrollbar-width:none}.top-nav a{font-size:12px;color:#53667f;font-weight:750;transition:color .2s}.top-nav a:hover,.top-nav a.active{color:#3158a8}.head-action{border:1px solid #d6e0ed;border-radius:100px;padding:9px 14px;font-size:12px;font-weight:800;white-space:nowrap;background:white}.mobile-menu{display:none;background:none;border:0;font-size:22px}
+    .hero{background:radial-gradient(ellipse 700px 420px at 92% 1%,#e8f0ff 0%,transparent 74%),radial-gradient(ellipse 650px 340px at 4% 50%,#f5f8ff 0%,transparent 76%),#fff;padding:85px 0 71px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:36px}.hero .lead{font-size:17px}.hero-title-accent{background:linear-gradient(90deg,#2f548d,#4578d1 62%,#278c93);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-authors{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px;margin:20px 0;color:#54667e}.hero-authors strong{color:#283e61}.hero-authors .dot{color:#bdc7d4}.resource-row{display:flex;flex-wrap:wrap;gap:10px;margin:27px 0}.resource{display:inline-flex;align-items:center;gap:8px;border-radius:100px;border:1px solid #dbe3ef;background:white;padding:11px 17px;font-size:13px;font-weight:800;min-height:42px;box-shadow:0 4px 15px rgba(44,65,110,.035)}.resource.primary{background:var(--navy);color:white;border-color:var(--navy)}.resource.disabled{opacity:.57;cursor:not-allowed}.resource:hover:not(.disabled){transform:translateY(-2px);box-shadow:0 10px 20px #283e6220}.hero-note{font-size:12px;color:#748199}.hero-figure{border:1px solid #dbe5f1;border-radius:26px;background:#fffffff2;padding:18px;box-shadow:0 24px 58px #284a8c16;position:relative}.figure-label{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800;color:#647a9b;display:flex;justify-content:space-between;margin:4px 5px 13px}.hero-figure svg{display:block;width:100%;height:auto}.figure-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#647994;font-size:11px;border-top:1px solid #e6edf5;padding:13px 6px 2px}.stat-strip{margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{padding:18px 21px;border:1px solid #e6ebf4;border-radius:15px;background:#fff;box-shadow:0 6px 25px #26437408}.stat strong{display:block;font-family:Manrope,sans-serif;font-size:27px;letter-spacing:-.06em;color:var(--navy)}.stat span{font-size:12px;color:#718098}
+    .abstract{margin-top:42px;border-left:4px solid #7295df;background:#f8faff;padding:24px 27px;border-radius:0 15px 15px 0}.abstract h3{margin:0 0 8px;font-size:18px}.abstract p{color:#536781;line-height:1.8;margin:0}
+    .cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature-card{border:1px solid var(--line);border-radius:var(--radius);padding:25px;background:#fff;box-shadow:var(--shadow);min-height:245px}.feature-card .icon-box{display:grid;place-items:center;width:49px;height:49px;border-radius:15px;background:#e8edfb;font-size:25px}.feature-card:nth-child(2) .icon-box{background:#e4f4f0}.feature-card:nth-child(3) .icon-box{background:#fff1e4}.feature-card p{color:var(--muted);font-size:14px;margin:8px 0 0}
+    .explorer-wrap{display:grid;grid-template-columns:1fr 1.03fr;gap:24px;align-items:stretch}.panel{border:1px solid var(--line);background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}.panel h3{margin:0 0 8px}.field{margin:24px 0}.field label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;font-weight:800;margin-bottom:10px}.field label strong{color:#3962ae;font-size:14px}input[type="range"]{width:100%;accent-color:#426dda;cursor:pointer}.range-foot{display:flex;justify-content:space-between;color:#8693a6;font-size:11px}.presets{display:flex;flex-wrap:wrap;gap:7px}.chip{padding:8px 12px;border-radius:100px;background:#f4f6fa;border:1px solid #e0e6ef;color:#5e6c85;font-weight:700;font-size:12px}.chip.selected,.chip:hover{background:#dfeaff;color:#325aa9;border-color:#a6c1f3}.memory-visual{display:flex;flex-direction:column;justify-content:space-between;gap:18px;background:linear-gradient(140deg,#1c3258,#263e67 72%,#295b75);color:white;overflow:hidden}.memory-visual h3{color:white}.big-number{font-size:clamp(34px,4vw,59px);font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.065em;line-height:1.1;margin:12px 0 4px}.memory-bars{display:grid;gap:16px}.memory-row{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#dce7fc;margin-bottom:6px}.bar-track{height:12px;border-radius:50px;background:#516587;overflow:hidden}.bar-fill{height:100%;width:0%;border-radius:50px;background:#90e5d8;transition:width .15s}.bar-fill.flash{background:#ffc07b}.memory-verdict{border:1px solid #6981a2;border-radius:12px;padding:15px;font-size:13px;background:#ffffff10;color:#e7effd;line-height:1.7}.math-box{font-family:ui-monospace,Consolas,monospace;background:#f4f7fd;border:1px solid #e2e8f5;padding:12px;border-radius:12px;color:#435a7b;font-size:13px}
+    .method-visual{border:1px solid #dee8f5;border-radius:22px;padding:27px;background:#fcfdff;margin:16px 0 27px;overflow-x:auto}.pipeline{display:flex;align-items:stretch;gap:7px;min-width:725px}.pipe{background:#f0f5fd;border:1px solid #dfe9f5;border-radius:14px;padding:15px 12px;flex:1;text-align:center;min-height:122px}.pipe:nth-of-type(3){background:#e7f7f2}.pipe:nth-of-type(5){background:#fff1e5}.pipe b{display:block;font-size:13px;margin:4px 0}.pipe small{display:block;font-size:11px;color:#72819a;line-height:1.4}.arr{display:grid;place-items:center;color:#9ba9bd;font-size:24px}.method-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.method-item{padding:17px 0;border-top:2px solid #e3eaf3}.method-item .number{font-size:12px;font-weight:800;color:#5582ca}.method-item p{color:var(--muted);font-size:13px}
+    .sem-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.quote-card{border:1px solid var(--line);border-radius:18px;padding:25px;background:white}.quote-card strong{color:#2b568d}.quote{font-size:21px;color:#1f3151;font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.045em;line-height:1.5}.arrowline{display:flex;align-items:center;gap:10px;color:#8ca0b9;font-weight:800;font-size:12px;margin:18px 0 12px}.arrowline:after{content:"";height:1px;background:#dce3ee;flex:1}.token-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.token{font-family:ui-monospace,Consolas,monospace;font-size:13px;padding:8px 10px;background:#e7eefb;color:#2f568f;border-radius:8px}.token.special{background:#e5f7ed;color:#147759}
+    .bench-top{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}.data-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:17px}.data-table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}.data-table th{text-align:left;color:#52667f;font-size:11px;text-transform:uppercase;letter-spacing:.08em;background:#f7f9fd;padding:17px 14px;border-bottom:1px solid #e2e8f1}.data-table td{padding:16px 14px;border-bottom:1px solid #eef1f6;color:#4f6079;vertical-align:middle}.data-table tbody tr:last-child td{border-bottom:none}.data-table td:first-child{font-weight:800;color:#1f3d69}.data-table a{color:#3d68bd;font-weight:800}.bench-mini{display:grid;grid-template-columns:1fr 1fr;gap:21px;margin-top:23px}.hbar{display:grid;grid-template-columns:155px 1fr 60px;gap:12px;align-items:center;font-size:12px;margin:15px 0}.hbar .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hbar .track{height:17px;background:#eff3fa;border-radius:5px;overflow:hidden}.hbar .fill{height:100%;background:linear-gradient(90deg,#789be8,#3e6cd2);border-radius:5px}.hbar .num{font-weight:800;color:#35599d}
+    .models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.model{display:flex;flex-direction:column;gap:9px;background:white;border:1px solid var(--line);border-radius:17px;padding:21px;box-shadow:0 8px 26px #28436e08}.model .top{display:flex;justify-content:space-between;gap:10px;align-items:center}.model .model-emoji{font-size:30px}.model h3{font-size:18px;margin:6px 0 2px}.model p{font-size:13px;color:var(--muted);margin:0;flex:1}.model-foot{display:flex;justify-content:space-between;gap:7px;align-items:center;margin-top:12px;padding-top:13px;border-top:1px solid #edf1f7;font-size:12px}.model-foot a{font-weight:800;color:#3d6cc0}
+    .gallery{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:15px}.gallery-card{border:1px solid var(--line);border-radius:17px;overflow:hidden;background:#fff}.gallery-art{height:215px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(140deg,#ecf3ff,#f4f8fc)}.gallery-art svg{width:100%;height:100%}.gallery-caption{padding:15px 18px}.gallery-caption b{display:block;font-size:13px}.gallery-caption span{font-size:12px;color:var(--muted)}
+    .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.demo-label{font-size:12px;font-weight:800;color:#49658d;margin-bottom:9px;display:block}textarea{width:100%;min-height:100px;border:1px solid #dce5f2;background:#fafdff;border-radius:13px;padding:16px;resize:vertical;outline:0;color:#203a60}.demo-cta{border:0;background:#294c86;color:#fff;border-radius:11px;padding:11px 18px;font-size:12px;font-weight:800}.demo-cta:hover{background:#416ab0}.demo-out{white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;background:#172b49;color:#d8f6e8;border-radius:12px;min-height:155px;font:13px/1.7 ui-monospace,Consolas,monospace}.demo-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}.demo-tip{color:#798ba2;font-size:12px;margin-top:11px}
+    .cite-grid{display:grid;grid-template-columns:1fr 1fr;gap:23px}.citation{background:#172945;border-radius:17px;padding:24px;position:relative;color:#dceafc;overflow:auto}.citation pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.75;margin:42px 0 0;color:#baf2e4}.copy{position:absolute;top:17px;right:17px;border:1px solid #667997;background:#263e5e;color:#fff;padding:8px 12px;border-radius:9px;font-size:12px}.references{margin:0;padding-left:21px;font-size:13px;color:#586981;line-height:1.9}.references li{margin:0 0 10px}.references a{font-weight:800;color:#4168b4}.ack{margin-top:32px;padding:24px;border-radius:15px;background:#f7faff;border:1px solid #e5ebf5}.ack strong{color:#274973}.ack p{margin:8px 0 0;color:#5b6b83}.footer{background:#172a49;color:#bac8dd;padding:42px 0;font-size:12px}.footer a{color:#cbdaf2;text-decoration:underline;text-underline-offset:3px}.footer-inner{display:grid;grid-template-columns:1fr 2fr;gap:30px}.footer-brand{color:white;font-weight:800;font-size:18px;letter-spacing:-.04em}.footer p{margin:0 0 10px}.footer-credit{font-size:11px;color:#a6b7cf}
+    @media(max-width:1000px){.hero-grid{grid-template-columns:1fr}.hero-figure{max-width:700px}.head-action{display:none}.top-nav{gap:15px}.gallery{grid-template-columns:repeat(2,1fr)}.gallery-card:first-child{grid-column:span 2}}@media(max-width:780px){.container{width:min(100% - 32px,600px)}.site-header{height:auto;min-height:65px}.header-in{flex-wrap:wrap;min-height:65px;gap:0}.mobile-menu{display:block}.top-nav{display:none;width:100%;flex-direction:column;align-items:flex-start;padding:16px 0 20px;gap:13px;border-top:1px solid #edf0f4}.top-nav.open{display:flex}.hero{padding:55px 0 50px}.section{padding:63px 0}.cols-3,.method-cols,.models-grid,.explorer-wrap,.sem-grid,.demo-grid,.cite-grid,.bench-mini{grid-template-columns:1fr}.stat-strip{grid-template-columns:repeat(2,1fr)}.gallery{grid-template-columns:1fr}.gallery-card:first-child{grid-column:auto}.footer-inner{grid-template-columns:1fr}.resource-row{gap:8px}.resource{padding:9px 12px}.panel{padding:22px}.hero-figure{padding:12px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="brand" href="#home" aria-label="TinyPaper về đầu trang"><span class="brand-mark">T</span>Tiny<em>Paper</em></a>
+      <button class="mobile-menu" id="menuButton" type="button" aria-label="Mở điều hướng" aria-controls="mainNav" aria-expanded="false">☰</button>
+      <nav class="top-nav" id="mainNav" aria-label="Điều hướng bài báo">
+        <a href="#overview">Overview</a><a href="#explorer">Explorer</a><a href="#method">Method</a><a href="#semantics">Semantics</a><a href="#benchmarks">Benchmarks</a><a href="#models">TinyLLM Models</a><a href="#cite">Cite</a>
+      </nav>
+      <a class="head-action" href="https://github.com/xulytiengviet/Tinypaper" target="_blank" rel="noopener noreferrer">⌘ View code ↗</a>
+    </div>
+  </header>
+  <main id="home">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <span class="pill">✦ PREPRINT · RESEARCH PROJECT · 2026</span>
+            <h1>TinyLLM <span class="hero-title-accent">tiếng Việt</span><br>trên ESP32-S3</h1>
+            <p class="lead">Thực trạng nghiên cứu, giới hạn suy luận trên vi điều khiển và đề xuất một khung đánh giá có khả năng tái lập cho các mô hình ngôn ngữ siêu nhỏ.</p>
+            <div class="hero-authors"><strong>Dai-Long Ngo-Hoàng (Long Ngo)</strong><span class="dot">·</span><span>Vietnamese TinyLLM Research</span><span class="dot">·</span><span>03 Nov 2026</span></div>
+            <div class="resource-row">
+              <a class="resource primary" href="https://github.com/xulytiengviet/Tinypaper/blob/main/PAPER.md" target="_blank" rel="noopener noreferrer">📄 Paper</a>
+              <span class="resource disabled" title="Chưa có mã bài báo arXiv" aria-disabled="true">↗ arXiv · pending</span>
+              <a class="resource" href="https://github.com/xulytiengviet/Tinypaper" target="_blank" rel="noopener noreferrer">⌘ Code</a>
+              <a class="resource" href="#models">🤗 Models</a>
+              <a class="resource" href="#images">▧ Images</a>
+              <a class="resource" href="#demo">▷ Demo</a>
+            </div>
+            <p class="hero-note">Lưu ý: trang tổng quan và đề xuất phương pháp; chưa công bố trọng số TinyLLM tiếng Việt hoặc số liệu thử nghiệm mới trên MCU.</p>
+          </div>
+          <div class="hero-figure">
+            <div class="figure-label"><span>VN-MCU-LM · Conceptual architecture</span><span>Fig. 01</span></div>
+            <svg viewBox="0 0 630 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sơ đồ các tầng giao diện tiếng Việt, xử lý ngôn ngữ, TinyLM, kiểm tra an toàn và ESP32-S3">
+              <defs><linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3663a5"/><stop offset="1" stop-color="#213c68"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9fe8dc"/><stop offset="1" stop-color="#5dc4ba"/></linearGradient></defs>
+              <rect x="5" y="5" width="620" height="420" rx="20" fill="#f7faff"/><g opacity=".35" stroke="#dbe6f6"><path d="M0 55H630M0 110H630M0 165H630M0 220H630M0 275H630M0 330H630M0 385H630"/><path d="M50 0V430M105 0V430M160 0V430M215 0V430M270 0V430M325 0V430M380 0V430M435 0V430M490 0V430M545 0V430M600 0V430"/></g>
+              <rect x="48" y="48" width="534" height="59" rx="13" fill="#eaf0fc" stroke="#d0dcf1"/><text x="76" y="76" font-size="16" font-weight="700" fill="#325583">Ngôn ngữ tiếng Việt</text><text x="76" y="94" font-size="12" fill="#6a82a7">Âm tiết · thanh điệu · không dấu · Unicode</text><rect x="432" y="63" width="121" height="28" rx="7" fill="#fff"/><text x="443" y="82" font-family="monospace" font-size="12" fill="#426eb5">bật đèn →</text>
+              <path d="M315 108V132" stroke="#7895bf" stroke-width="3"/><path d="M309 126L315 134L321 126" fill="none" stroke="#7895bf" stroke-width="3"/>
+              <rect x="48" y="144" width="232" height="82" rx="13" fill="#fff" stroke="#d8e2f1"/><text x="68" y="171" font-size="13" font-weight="700" fill="#355b93">Tokenizer &amp; semantics</text><text x="68" y="191" font-size="12" fill="#7790ae">Chuẩn hóa · phân loại ý định</text><text x="68" y="208" font-size="11" fill="#8298b3">Vietnamese-aware processing</text>
+              <rect x="302" y="144" width="280" height="82" rx="13" fill="url(#a)"/><text x="325" y="174" font-size="16" font-weight="800" fill="white">TinyLM · ESP32-S3</text><text x="325" y="195" font-size="12" fill="#e3edff">INT4 / ternary · flash · PSRAM</text><text x="325" y="212" font-size="11" fill="#bcd0ed">On-device where feasible</text>
+              <path d="M280 184H302" stroke="#7895bf" stroke-width="3"/><path d="M296 178L304 184L296 190" fill="none" stroke="#7895bf" stroke-width="3"/>
+              <path d="M439 227V260" stroke="#7895bf" stroke-width="3"/><path d="M433 254L439 262L445 254" fill="none" stroke="#7895bf" stroke-width="3"/>
+              <rect x="48" y="272" width="534" height="70" rx="13" fill="#e2f5f0" stroke="#a3dbd3"/><circle cx="82" cy="307" r="19" fill="#8dd4c6"/><path d="M73 307l6 6 13-15" stroke="#1f7c6a" stroke-width="3.5" fill="none" stroke-linecap="round"/><text x="115" y="302" font-size="15" font-weight="800" fill="#286e68">Runtime safety shield</text><text x="115" y="323" font-size="12" fill="#427e75">Kiểm tra JSON · trạng thái · quyền thực thi · fallback</text>
+              <path d="M313 343V370" stroke="#7895bf" stroke-width="3"/><path d="M307 365L313 373L319 365" fill="none" stroke="#7895bf" stroke-width="3"/>
+              <rect x="185" y="376" width="256" height="30" rx="9" fill="#f9e7d1"/><text x="199" y="396" font-size="12" font-weight="800" fill="#986423">GPIO · cảm biến · thiết bị IoT</text>
+            </svg>
+            <div class="figure-foot"><span>◈ Offline-first architecture</span><span>Original diagram · not device measurements</span></div>
+          </div>
+        </div>
+        <div class="stat-strip">
+          <div class="stat"><strong>512 KB</strong><span>SRAM tích hợp ESP32-S3</span></div>
+          <div class="stat"><strong>28.9M</strong><span>Tham số · demo PLE ngoài dự án</span></div>
+          <div class="stat"><strong>6</strong><span>Nhóm đánh giá VN-MCU-LM đề xuất</span></div>
+          <div class="stat"><strong>03/11</strong><span>Ngày khóa tư liệu · 2026</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="container">
+        <div class="section-head"><span class="kicker">01 / Overview</span><h2>Can language intelligence fit inside a microcontroller?</h2><p>TinyLLM không có nghĩa là một trợ lý hội thoại toàn năng được thu nhỏ. Điểm cốt lõi là lựa chọn đúng tác vụ, thiết kế đúng kiến trúc và đánh giá đúng giới hạn.</p></div>
+        <div class="cols-3">
+          <article class="feature-card"><div class="icon-box">🔬</div><h3>Evidence before claims</h3><p>Phân biệt bài báo bình duyệt, preprint, thử nghiệm mã nguồn mở và kết quả đo độc lập. Mỗi con số cần đi kèm nguồn, phần cứng và tác vụ.</p></article>
+          <article class="feature-card"><div class="icon-box">🧠</div><h3>Vietnamese by design</h3><p>Chuẩn hóa tiếng Việt có dấu/không dấu, phân tách âm tiết–từ, tokenizer, câu lệnh đồng nghĩa và kiểm thử an toàn trong ngữ cảnh IoT.</p></article>
+          <article class="feature-card"><div class="icon-box">⚡</div><h3>Offline-first evaluation</h3><p>Đo tính hữu ích trên MCU qua flash, SRAM, PSRAM, độ trễ p95, điện năng mỗi yêu cầu và tỷ lệ thao tác đúng — không chỉ token/giây.</p></article>
+        </div>
+        <div class="abstract">
+          <h3>Abstract · Tóm tắt nghiên cứu</h3>
+          <p>Chúng tôi tổng quan các minh chứng TinyLM chạy trên vi điều khiển ESP32-S3 và đối chiếu với các công trình Transformer, TinyML tiếng Việt và suy luận phân tán. Bài báo phân biệt suy luận thực sự trên chip với kiến trúc edge/cloud, đề xuất pipeline TinyLLM tiếng Việt theo tầng và benchmark VN-MCU-LM. Đây là <b>research agenda / preprint</b>; số liệu thiết bị dưới đây được ghi nhận từ các dự án độc lập và không cấu thành kết quả thực nghiệm mới của TinyPaper.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-soft" id="explorer">
+      <div class="container">
+        <div class="section-head"><span class="kicker">02 / Explorer</span><h2>Explore the memory wall</h2><p>Tương tác để ước tính dung lượng trọng số theo tham số và bit/weight. Phép tính là cận dưới lý tưởng, không bao gồm activation, KV cache, metadata, firmware hay chi phí truy cập bộ nhớ.</p></div>
+        <div class="explorer-wrap">
+          <div class="panel">
+            <h3>◈ Model memory explorer</h3><p class="tiny">Ước lượng tham số, không phải bộ mô phỏng chạy mô hình thật.</p>
+            <div class="field"><label for="paramRange">Số tham số <strong id="paramValue">28.9M</strong></label><input id="paramRange" type="range" min="0.26" max="45" value="28.9" step=".01"><div class="range-foot"><span>260K</span><span>45M parameters</span></div></div>
+            <div class="field"><label for="bitRange">Số bit trung bình / weight <strong id="bitValue">4-bit</strong></label><input id="bitRange" type="range" min="0" max="4" value="2" step="1"><div class="range-foot"><span>FP16</span><span>Ternary ~1.58</span></div></div>
+            <div class="field"><label>Preset nghiên cứu</label><div class="presets"><button type="button" class="chip" data-p="0.26">260K</button><button type="button" class="chip" data-p="3">3M</button><button type="button" class="chip" data-p="8">8M</button><button type="button" class="chip selected" data-p="28.9">28.9M</button><button type="button" class="chip" data-p="45">45M</button></div></div>
+            <div class="math-box">M<sub>weights</sub> ≈ Parameters × bits / 8<br>Q4 lý tưởng ≠ dung lượng checkpoint Q4 thực tế</div>
+          </div>
+          <div class="panel memory-visual">
+            <div><span class="eyebrow" style="color:#9ed4ea">THEORETICAL LOWER BOUND</span><div class="big-number"><span id="memoryValue">14.45</span> <span style="font-size:.5em">MB</span></div><p style="color:#bfcce2;font-size:13px">Trọng số mô hình, theo đơn vị thập phân.</p></div>
+            <div class="memory-bars">
+              <div><div class="memory-row"><span>⚙ SRAM tích hợp</span><span>0.512 MB</span></div><div class="bar-track"><div id="sramBar" class="bar-fill"></div></div></div>
+              <div><div class="memory-row"><span>▤ PSRAM mẫu 8 MB</span><span>8 MB</span></div><div class="bar-track"><div id="psramBar" class="bar-fill"></div></div></div>
+              <div><div class="memory-row"><span>▣ Flash mẫu 16 MB</span><span>16 MB</span></div><div class="bar-track"><div id="flashBar" class="bar-fill flash"></div></div></div>
+            </div>
+            <div id="memoryVerdict" class="memory-verdict" aria-live="polite">Ước lượng lý tưởng đang được tính.</div>
+            <p class="tiny" style="color:#b1c1d8;margin:0">Flash có thể chứa trọng số nhưng không đồng nghĩa SRAM đủ cho suy luận. Một số mô hình dùng PLE, mmap, compression hỗn hợp và phân cấp bộ nhớ.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="container">
+        <div class="section-head"><span class="kicker">03 / Method</span><h2>VN-MCU-LM: a testable research framework</h2><p>Kiến trúc gợi ý cho các tác vụ hiểu lệnh tiếng Việt trên thiết bị nhúng. Mỗi thành phần có thể được thay thế bằng baseline đơn giản để thực hiện ablation study.</p></div>
+        <div class="method-visual" role="img" aria-label="Pipeline dữ liệu tiếng Việt đến tokenizer, TinyLM, kiểm tra an toàn, xuất thiết bị IoT">
+          <div class="pipeline"><div class="pipe"><div style="font-size:27px">🗣</div><b>Input</b><small>Giọng nói / văn bản tiếng Việt</small></div><span class="arr">→</span><div class="pipe"><div style="font-size:27px">🔤</div><b>Normalize</b><small>NFC, dấu, từ vựng, tokenizer</small></div><span class="arr">→</span><div class="pipe"><div style="font-size:27px">🧠</div><b>TinyLM</b><small>Quantization + memory layout</small></div><span class="arr">→</span><div class="pipe"><div style="font-size:27px">🛡</div><b>Safety</b><small>Schema, permission, state check</small></div><span class="arr">→</span><div class="pipe"><div style="font-size:27px">💡</div><b>Action</b><small>JSON/GPIO hoặc từ chối có lý do</small></div></div>
+        </div>
+        <div class="method-cols">
+          <div class="method-item"><div class="number">01 / DATA</div><h3>Language diversity</h3><p>Chuẩn có dấu, không dấu, sai dấu, diễn đạt vùng miền và yêu cầu chứa tham số. Chia train/validation/test độc lập theo ý định và cách diễn đạt.</p></div>
+          <div class="method-item"><div class="number">02 / MODEL</div><h3>Architecture ablation</h3><p>So sánh rule-based, classifier, Tiny Transformer; giữ ngân sách tài nguyên cố định. Thử INT8, INT4 và ternary với chất lượng đầu ra được đánh giá đồng thời.</p></div>
+          <div class="method-item"><div class="number">03 / RUNTIME</div><h3>On-device profiling</h3><p>Đo trên phần cứng thực: latency, TTFT, peak memory, thời gian boot, năng lượng/yêu cầu, watchdog, lỗi ngoại tuyến và thời gian phục hồi.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-soft" id="semantics">
+      <div class="container">
+        <div class="section-head"><span class="kicker">04 / Semantics</span><h2>Vietnamese is more than removing accents</h2><p>Một hệ thống TinyLLM hữu ích cần phân biệt biểu diễn ký tự, ý định ngôn ngữ và tính hợp lệ của hành động. Dấu thanh và ngữ cảnh có thể thay đổi nghĩa.</p></div>
+        <div class="sem-grid">
+          <div class="quote-card"><span class="pill">Semantic variants</span><div style="height:17px"></div><div class="quote">“Bật đèn phòng khách”<br>“Mở đèn ở phòng khách”<br>“Bat den phong khach”</div><div class="arrowline">Cùng một ý định trong ví dụ thiết kế</div><div class="token-row"><span class="token">intent: light.on</span><span class="token special">room: living</span></div></div>
+          <div class="quote-card"><span class="pill">Safety & ambiguity</span><div style="height:17px"></div><div class="quote">“Mở khóa”<br>“Mở khoá cửa chính”<br>“Mở cửa giúp tôi”</div><div class="arrowline">Không tự động suy diễn quyền thực thi</div><div class="token-row"><span class="token special">confirm: required</span><span class="token">action: denied by default</span></div></div>
+        </div>
+        <div class="cols-3" style="margin-top:20px">
+          <article class="feature-card" style="min-height:0"><div class="icon-box">✍</div><h3>Unicode & diacritics</h3><p>Kiểm tra NFC/NFD, chữ đ/Đ, dấu thanh và các ký tự kết hợp trước khi token hóa.</p></article>
+          <article class="feature-card" style="min-height:0"><div class="icon-box">▤</div><h3>Syllables ≠ words</h3><p>Khoảng trắng trong tiếng Việt thường ngăn cách âm tiết, không bảo đảm ranh giới từ. Tokenizer cần được đo theo từng miền tác vụ.</p></article>
+          <article class="feature-card" style="min-height:0"><div class="icon-box">⚖</div><h3>CVNSS4.0 as a research arm</h3><p>Khảo sát phép ánh xạ ký tự và mã hóa thay thế như một nhánh ablation, không mặc định kết luận cải thiện nén hay độ chính xác.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="benchmarks">
+      <div class="container">
+        <div class="section-head"><span class="kicker">05 / Benchmarks</span><h2>Measured projects, different tasks</h2><p>Số liệu tham khảo được báo cáo bởi tác giả của các dự án độc lập; không phải kết quả VN-MCU-LM và <b>không</b> đủ điều kiện xếp hạng trực tiếp vì khác mô hình, tác vụ, firmware và phần cứng.</p></div>
+        <div class="bench-top"><span class="pill warn">⚠ Cross-project, non-comparable</span><span class="pill muted-pill">Sources linked in each row</span><span class="pill muted-pill">Not TinyPaper benchmark results</span></div>
+        <div class="data-table-wrap"><table class="data-table">
+          <thead><tr><th>Project</th><th>Model</th><th>Reported speed</th><th>Task</th><th>Evidence level</th><th>Source</th></tr></thead>
+          <tbody>
+          <tr><td>DaveBben</td><td>260K</td><td>19.13 tok/s</td><td>TinyStories, sinh truyện</td><td><span class="pill muted-pill">GitHub self-report</span></td><td><a href="https://github.com/DaveBben/esp32-llm" target="_blank" rel="noopener noreferrer">Repository ↗</a></td></tr>
+          <tr><td>slvDev</td><td>28.9M PLE</td><td>9.88 tok/s</td><td>TinyStories, sinh truyện</td><td><span class="pill muted-pill">GitHub self-report</span></td><td><a href="https://github.com/slvDev/esp32-ai" target="_blank" rel="noopener noreferrer">Repository ↗</a></td></tr>
+          <tr><td>Bellman281</td><td>28.9M PLE / Rust</td><td>10.50 tok/s</td><td>TinyStories, sinh truyện</td><td><span class="pill muted-pill">GitHub self-report</span></td><td><a href="https://github.com/Bellman281/esp32-tinyLLM" target="_blank" rel="noopener noreferrer">Benchmarks ↗</a></td></tr>
+          <tr><td>Needle 2 ESP32</td><td>45M</td><td>1.87 tok/s</td><td>JSON tool calling</td><td><span class="pill muted-pill">GitHub self-report</span></td><td><a href="https://github.com/andrisgauracs/needle-2-esp32" target="_blank" rel="noopener noreferrer">Repository ↗</a></td></tr>
+          </tbody>
+        </table></div>
+        <div class="bench-mini">
+          <div class="panel"><h3>▥ Reported generation rate</h3><p class="tiny">Chỉ biểu diễn các con số công bố; khác tác vụ nên không dùng để kết luận mô hình tốt hơn.</p>
+            <div class="hbar"><span class="t">DaveBben · 260K</span><span class="track"><span class="fill" style="display:block;width:100%"></span></span><span class="num">19.13</span></div>
+            <div class="hbar"><span class="t">slvDev · 28.9M</span><span class="track"><span class="fill" style="display:block;width:51.6%"></span></span><span class="num">9.88</span></div>
+            <div class="hbar"><span class="t">Bellman · Rust</span><span class="track"><span class="fill" style="display:block;width:54.9%"></span></span><span class="num">10.50</span></div>
+            <div class="hbar"><span class="t">Needle 2 · 45M</span><span class="track"><span class="fill" style="display:block;width:9.8%"></span></span><span class="num">1.87</span></div>
+            <p class="tiny">Đơn vị: token/giây, chỉ theo README tương ứng.</p>
+          </div>
+          <div class="panel"><h3>▦ Proposed VN-MCU-LM metrics</h3><p class="tiny">Giao thức đo mới — chưa có dữ liệu để điền kết quả.</p>
+            <div class="token-row"><span class="token">Macro-F1</span><span class="token">Slot exact match</span><span class="token">JSON validity</span><span class="token">Unsafe actions</span><span class="token">p95 latency</span><span class="token">Peak RAM</span><span class="token">mJ/request</span><span class="token">Offline success</span></div>
+            <div style="margin-top:22px" class="math-box">Benchmark status: <strong>protocol proposal</strong><br>No new ESP32-S3 experiments claimed.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-soft" id="models">
+      <div class="container">
+        <div class="section-head"><span class="kicker">06 / TinyLLM Models</span><h2>Explore the external model ecosystem</h2><p>Những checkpoint và engine tham khảo đã tồn tại độc lập với TinyPaper. Việc liệt kê không có nghĩa chúng là mô hình tiếng Việt, hay đã được nhóm TinyPaper huấn luyện và phát hành.</p></div>
+        <div class="bench-top" aria-label="Bộ lọc mô hình"><button class="chip selected" data-filter="all" type="button">All</button><button class="chip" data-filter="language" type="button">Language</button><button class="chip" data-filter="tools" type="button">Tool calling</button><button class="chip" data-filter="runtime" type="button">Runtime / Engine</button></div>
+        <div class="models-grid" id="modelGrid">
+          <article class="model" data-category="language"><div class="top"><span class="model-emoji">📚</span><span class="pill muted-pill">English</span></div><h3>TinyStories · 260K</h3><p>Mô hình sinh truyện quy mô nhỏ trên ESP32-S3; minh chứng nền tảng về feasibility, không phải chatbot tổng quát.</p><div class="model-foot"><span>DaveBben / ESP32-S3</span><a href="https://github.com/DaveBben/esp32-llm" target="_blank" rel="noopener noreferrer">Code ↗</a></div></article>
+          <article class="model" data-category="language"><div class="top"><span class="model-emoji">🧩</span><span class="pill muted-pill">English</span></div><h3>PLE TinyLM · 28.9M</h3><p>Phân cấp bộ nhớ sử dụng bảng Per-Layer Embeddings nằm trong flash, lõi mô hình lượng tử hóa.</p><div class="model-foot"><span>slvDev / ESP32-S3</span><a href="https://github.com/slvDev/esp32-ai" target="_blank" rel="noopener noreferrer">Code ↗</a></div></article>
+          <article class="model" data-category="runtime"><div class="top"><span class="model-emoji">🦀</span><span class="pill muted-pill">Rust engine</span></div><h3>esp32-tinyLLM</h3><p>Cùng họ mô hình PLE TinyStories với bản Rust tối ưu hóa và các kiểm thử đối chiếu C/reference.</p><div class="model-foot"><span>Bellman281</span><a href="https://github.com/Bellman281/esp32-tinyLLM" target="_blank" rel="noopener noreferrer">Code ↗</a></div></article>
+          <article class="model" data-category="tools"><div class="top"><span class="model-emoji">🛠</span><span class="pill muted-pill">English / JSON</span></div><h3>Needle 2 · 45M</h3><p>Bản port gọi công cụ ngoại tuyến trên ESP32-S3. Ngữ pháp JSON ràng buộc; có giới hạn tác vụ và độ trễ đáng kể.</p><div class="model-foot"><span>andrisgauracs</span><a href="https://github.com/andrisgauracs/needle-2-esp32" target="_blank" rel="noopener noreferrer">Code ↗</a></div></article>
+          <article class="model" data-category="tools"><div class="top"><span class="model-emoji">💡</span><span class="pill warn">Research candidate</span></div><h3>Vietnamese TinyLM</h3><p>Hướng nghiên cứu đề xuất: lệnh IoT tiếng Việt → JSON an toàn, kết hợp tokenizer và đánh giá VN-MCU-LM.</p><div class="model-foot"><span>Chưa công bố weights</span><span class="tiny">Planned</span></div></article>
+          <article class="model" data-category="runtime"><div class="top"><span class="model-emoji">🤗</span><span class="pill muted-pill">Model discovery</span></div><h3>Hugging Face models</h3><p>Tìm các checkpoint và card mô hình công khai. Phải kiểm tra license, định dạng và phần cứng hỗ trợ trước khi triển khai.</p><div class="model-foot"><span>Third-party directory</span><a href="https://huggingface.co/models?search=esp32" target="_blank" rel="noopener noreferrer">Explore ↗</a></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="images">
+      <div class="container">
+        <div class="section-head"><span class="kicker">07 / Images & visualizations</span><h2>Research illustrations</h2><p>Hình minh họa SVG tự dựng cho bài nghiên cứu, không phải ảnh chụp hệ thống hay minh chứng về hiệu năng thực nghiệm.</p></div>
+        <div class="gallery">
+          <figure class="gallery-card" style="margin:0"><div class="gallery-art"><svg viewBox="0 0 440 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minh họa chip ESP32 và các tầng bộ nhớ"><rect width="440" height="215" fill="#f0f5ff"/><g stroke="#b4c9e5" stroke-width="3"><path d="M70 20V195M110 20V195M330 20V195M370 20V195M20 70H420M20 146H420"/></g><rect x="132" y="31" width="176" height="153" rx="18" fill="#1f3b66"/><rect x="152" y="50" width="136" height="116" rx="12" fill="#345c9b"/><rect x="165" y="64" width="110" height="31" rx="6" fill="#aee9de"/><text x="220" y="85" font-size="13" font-weight="700" text-anchor="middle" fill="#1a6561">TinyLM</text><rect x="165" y="102" width="110" height="20" rx="5" fill="#fff" opacity=".85"/><rect x="165" y="130" width="48" height="20" rx="5" fill="#ffcc8c"/><rect x="222" y="130" width="53" height="20" rx="5" fill="#c8d6f7"/><text x="188" y="144" font-size="10" text-anchor="middle" fill="#704415">Flash</text><text x="248" y="144" font-size="10" text-anchor="middle" fill="#254472">RAM</text><g fill="#f0ba71"><circle cx="110" cy="70" r="5"/><circle cx="330" cy="146" r="5"/></g></svg></div><figcaption class="gallery-caption"><b>Fig. 1 · Memory hierarchy</b><span>Trọng số và vùng thực thi trên MCU</span></figcaption></figure>
+          <figure class="gallery-card" style="margin:0"><div class="gallery-art"><svg viewBox="0 0 320 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minh họa chuỗi token tiếng Việt"><rect width="320" height="215" fill="#f0f5ff"/><g font-size="15" font-weight="700"><rect x="22" y="29" width="276" height="51" rx="11" fill="#fff"/><text x="44" y="60" fill="#375d99">Bật đèn phòng khách</text><path d="M160 82V112" stroke="#9aafcf" stroke-width="3"/><path d="M152 105L160 114L168 105" stroke="#9aafcf" stroke-width="3" fill="none"/><rect x="22" y="132" width="73" height="40" rx="8" fill="#cfe0fd"/><rect x="105" y="132" width="77" height="40" rx="8" fill="#bbece2"/><rect x="192" y="132" width="106" height="40" rx="8" fill="#f8deb8"/><text x="58" y="157" fill="#345481" text-anchor="middle">bật</text><text x="143" y="157" fill="#326c64" text-anchor="middle">đèn</text><text x="245" y="157" fill="#865c2a" text-anchor="middle">phòng khách</text></g></svg></div><figcaption class="gallery-caption"><b>Fig. 2 · Vietnamese semantics</b><span>Âm tiết, từ ghép và ý định</span></figcaption></figure>
+          <figure class="gallery-card" style="margin:0"><div class="gallery-art"><svg viewBox="0 0 320 215" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minh họa các bit lượng tử hóa"><rect width="320" height="215" fill="#f0f5ff"/><text x="24" y="31" fill="#52719e" font-size="12" font-weight="700">WEIGHT REPRESENTATION</text><g font-size="12" fill="#32578b" font-family="monospace"><text x="24" y="74">FP16</text><text x="24" y="111">INT8</text><text x="24" y="148">INT4</text><text x="24" y="185">1.58</text></g><g fill="#88a9e0"><rect x="86" y="55" width="210" height="21" rx="5"/><rect x="86" y="92" width="105" height="21" rx="5"/><rect x="86" y="129" width="53" height="21" rx="5"/></g><rect x="86" y="166" width="21" height="21" rx="5" fill="#83d1bd"/><g stroke="#fff" stroke-width="2"><path d="M112 55V76M139 55V76M165 55V76M191 55V76M217 55V76M243 55V76M269 55V76"/><path d="M112 92V113M139 92V113M165 92V113"/></g></svg></div><figcaption class="gallery-caption"><b>Fig. 3 · Quantization</b><span>So sánh bit/weight lý tưởng</span></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-soft" id="demo">
+      <div class="container">
+        <div class="section-head"><span class="kicker">08 / Interactive demo</span><h2>Try a safe, deterministic intent baseline</h2><p>Mô phỏng tokenizer và ánh xạ ý định tiếng Việt bằng <strong>quy tắc JavaScript</strong> ngay trên trình duyệt. Đây không phải suy luận TinyLLM, không gửi dữ liệu lên máy chủ và không kết nối GPIO.</p></div>
+        <div class="demo-grid">
+          <div class="panel"><label class="demo-label" for="demoInput">Vietnamese user prompt</label><textarea id="demoInput" spellcheck="false" placeholder="Ví dụ: Bật đèn phòng khách">Bật đèn phòng khách</textarea><div class="demo-buttons"><button type="button" class="chip" data-example="Bật đèn phòng khách">Bật đèn</button><button type="button" class="chip" data-example="tat quat phong ngu">Tắt quạt</button><button type="button" class="chip" data-example="Mở khóa cửa chính">Mở khóa</button><button type="button" class="chip" data-example="Bây giờ nhiệt độ bao nhiêu?">Nhiệt độ</button></div><button id="runDemo" type="button" class="demo-cta">▷ Phân tích câu lệnh</button><p class="demo-tip">Lưu ý: quy tắc minh họa rất hẹp, không bảo đảm hiểu mọi cách diễn đạt.</p></div>
+          <div class="panel"><label class="demo-label" for="demoOutput">Deterministic interpretation / JSON</label><div class="demo-out" id="demoOutput" role="status" aria-live="polite"></div><p class="demo-tip">Unsafe commands are denied by default. Không điều khiển thiết bị thật.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cite">
+      <div class="container">
+        <div class="section-head"><span class="kicker">09 / Cite</span><h2>Citation & research sources</h2><p>Trích dẫn bài tổng quan dưới dạng bản thảo nghiên cứu, chưa gán DOI hoặc arXiv ID. Vui lòng cập nhật citation nếu tài liệu được công bố chính thức.</p></div>
+        <div class="cite-grid">
+          <div class="citation"><button class="copy" id="copyBib" type="button">⧉ Copy BibTeX</button><pre id="bibtex">@misc{ngohoang2026tinypaper,
+  title        = {TinyLLM tieng Viet tren vi dieu khien:
+                  Thuc trang, gioi han va tiem nang},
+  author       = {Ngo-Hoang, Dai-Long},
+  year         = {2026},
+  month        = {November},
+  note         = {Research preprint; not peer reviewed},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/xulytiengviet/Tinypaper}
+}</pre></div>
+          <div><h3 style="margin-top:0">Selected references</h3><ol class="references"><li>Eldan &amp; Li (2023), <a href="https://arxiv.org/abs/2305.07759" target="_blank" rel="noopener noreferrer">TinyStories ↗</a></li><li>DaveBben (2024), <a href="https://github.com/DaveBben/esp32-llm" target="_blank" rel="noopener noreferrer">ESP32 LLM · 260K ↗</a></li><li>slvDev (2026), <a href="https://github.com/slvDev/esp32-ai" target="_blank" rel="noopener noreferrer">28.9M PLE TinyLM ↗</a></li><li>Bellman281 (2026), <a href="https://github.com/Bellman281/esp32-tinyLLM" target="_blank" rel="noopener noreferrer">Rust inference engine ↗</a></li><li>andrisgauracs (2026), <a href="https://github.com/andrisgauracs/needle-2-esp32" target="_blank" rel="noopener noreferrer">Needle 2 offline tool calling ↗</a></li><li>Nguyen &amp; Nguyen (2020), <a href="https://aclanthology.org/2020.findings-emnlp.92/" target="_blank" rel="noopener noreferrer">PhoBERT ↗</a></li><li>Espressif Systems, <a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf" target="_blank" rel="noopener noreferrer">ESP32-S3 datasheet ↗</a></li></ol><p class="tiny">Tài liệu phương pháp và giới hạn được tổng hợp trong <a href="https://github.com/xulytiengviet/Tinypaper/blob/main/PAPER.md">PAPER.md</a>.</p></div>
+        </div>
+        <div class="ack" id="acknowledgments">
+          <span class="kicker">Acknowledgments / Lời cảm ơn</span>
+          <h3>CVNSS4.0 · Sự hỗ trợ nghiên cứu</h3>
+          <p>Dự án CVNSS4.0 được nhà nghiên cứu <strong>Trần Tư Bình</strong> tài trợ, theo thông tin do nhóm dự án cung cấp. Chân thành cảm ơn sự hỗ trợ đối với hoạt động nghiên cứu và phát triển công cụ xử lý tiếng Việt. TinyPaper cũng ghi nhận các tác giả nghiên cứu, nhà phát triển mã nguồn mở và cộng đồng TinyML có công trình được dẫn nguồn trên trang.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container footer-inner"><div><a class="footer-brand" href="#home" style="text-decoration:none">TinyPaper · 2026</a><p style="margin-top:12px">Vietnamese TinyLLM research<br>Dai-Long Ngo-Hoàng (Long Ngo)</p><p>Research preprint · No fabricated measurements</p></div>
+    <div class="footer-credit"><p>This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener noreferrer">Academic Project Page Template</a>, which was adopted from the <a href="https://nerfies.github.io/" target="_blank" rel="noopener noreferrer">Nerfies</a> project page. You are free to borrow the source of this website; we just ask that you link back to this page in the footer. This website is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="license noopener noreferrer">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p><p>Layout inspired by the <a href="https://de-fm.github.io/" target="_blank" rel="noopener noreferrer">DeFM academic project page</a>; all TinyPaper diagrams and interactive examples in this implementation are original. External research/model licenses remain with their respective owners.</p><p>Built as a static GitHub Pages site. No cookies, tracking, server storage, or third-party model inference.</p></div></div>
+  </footer>
+  <script>
+    (function(){
+      "use strict";
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => Array.from(document.querySelectorAll(s));
+      const menu = $("#menuButton"), nav = $("#mainNav");
+      menu.addEventListener("click",()=>{const opened=nav.classList.toggle("open");menu.setAttribute("aria-expanded",String(opened));menu.textContent=opened?"✕":"☰"});
+      $$("#mainNav a").forEach(a=>a.addEventListener("click",()=>{nav.classList.remove("open");menu.setAttribute("aria-expanded","false");menu.textContent="☰"}));
+      if("IntersectionObserver" in window){const ob=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){$$("#mainNav a").forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+e.target.id))}})},{rootMargin:"-20% 0px -65% 0px"});$$("section[id]").forEach(s=>ob.observe(s))}
+      const bits=[16,8,4,2,Math.log2(3)], params=$("#paramRange"), bit=$("#bitRange");
+      function memUpdate(){
+        const p=Number(params.value), b=bits[Number(bit.value)], mb=p*b/8;
+        $("#paramValue").textContent=(p<1?(p*1000).toFixed(0)+"K":p.toFixed(p%1?2:0)+"M");
+        $("#bitValue").textContent=Number(bit.value)===4?"ternary · 1.585-bit":b+"-bit";
+        $("#memoryValue").textContent=mb<1?mb.toFixed(3):mb.toFixed(2);
+        $("#sramBar").style.width=Math.min(100,mb/0.512*100)+"%";
+        $("#psramBar").style.width=Math.min(100,mb/8*100)+"%";
+        $("#flashBar").style.width=Math.min(100,mb/16*100)+"%";
+        $("#memoryVerdict").textContent=mb>16?"Trọng số lý tưởng vượt 16 MB flash mẫu. Cần thêm bộ nhớ, phương pháp streaming, giảm mô hình hoặc biểu diễn khác.":mb>8?"Trọng số lý tưởng nằm dưới 16 MB flash nhưng vượt 8 MB PSRAM. Cần phân lớp/streaming; chưa đủ căn cứ kết luận chạy được.":mb>0.512?"Trọng số lý tưởng dưới 8 MB PSRAM nhưng vượt SRAM tích hợp. Cần đo KV cache, activation, firmware và băng thông bộ nhớ.":"Riêng trọng số lý tưởng có thể vừa SRAM; vẫn phải xét thêm toàn bộ bộ nhớ và toán tử để xác định khả năng chạy.";
+        $$(".presets button").forEach(c=>c.classList.toggle("selected",Math.abs(Number(c.dataset.p)-p)<.001));
+      }
+      params.addEventListener("input",memUpdate);bit.addEventListener("input",memUpdate);$$(".presets button").forEach(c=>c.addEventListener("click",()=>{params.value=c.dataset.p;memUpdate()}));memUpdate();
+      $$("[data-filter]").forEach(c=>c.addEventListener("click",()=>{$$("[data-filter]").forEach(e=>e.classList.toggle("selected",e===c));const filter=c.dataset.filter;$$(".model").forEach(m=>m.hidden=filter!=="all"&&m.dataset.category!==filter)}));
+      const unaccent=(text)=>text.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").toLowerCase().replace(/\s+/g," ").trim();
+      function runDemo(){
+        const input=$("#demoInput").value.slice(0,400), normalized=unaccent(input), entity=/den|bong/.test(normalized)?"light":/quat/.test(normalized)?"fan":/nhiet do/.test(normalized)?"temperature":null, room=/phong khach/.test(normalized)?"living_room":/phong ngu/.test(normalized)?"bedroom":null;
+        const unlock=/mo khoa|unlock|khoa cua/.test(normalized), on=/\b(bat|mo)\b/.test(normalized), off=/\b(tat|dong)\b/.test(normalized);
+        let response={mode:"deterministic_rules_demo",model_inference:false,original:input,normalized,action:"none",authorized:false,reason:"Không tìm được ý định trong tập quy tắc minh họa."};
+        if(unlock){response.action="deny";response.reason="Hành động nhạy cảm: cần kiểm tra quyền và xác nhận ngoài mô phỏng."}
+        else if(entity==="temperature"){response.action="sensor.read";response.sensor="temperature";response.authorized=false;response.reason="Chỉ phân tích ý định. Không có cảm biến được kết nối."}
+        else if(entity&&(on!==off)){response.action=entity+(on?".on":".off");response.room=room||"unspecified";response.authorized=false;response.reason="Intent candidate only; no physical control and no device state check."}
+        else if(entity&&on&&off){response.action="clarification_required";response.reason="Chứa cả lệnh bật và tắt."}
+        $("#demoOutput").textContent=JSON.stringify(response,null,2);
+      }
+      $("#runDemo").addEventListener("click",runDemo);
+      $$("[data-example]").forEach(c=>c.addEventListener("click",()=>{$("#demoInput").value=c.dataset.example;runDemo()}));runDemo();
+      $("#copyBib").addEventListener("click",async()=>{const b=$("#copyBib");try{await navigator.clipboard.writeText($("#bibtex").textContent);b.textContent="✓ Copied";setTimeout(()=>b.textContent="⧉ Copy BibTeX",1900)}catch(e){b.textContent="Select the text to copy";setTimeout(()=>b.textContent="⧉ Copy BibTeX",2200)}});
+    })();
+  </script>
+</body>
+</html>
