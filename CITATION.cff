@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you reference this TinyPaper research preprint or website, please cite this record and note that it is not peer reviewed."
 title: "TinyLLM tiếng Việt trên vi điều khiển ESP32-S3: Thực trạng, giới hạn và tiềm năng"
-type: misc
+type: software
 authors:
   - family-names: "Ngo-Hoang"
     given-names: "Dai-Long"
