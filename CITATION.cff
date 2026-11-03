@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you reference this TinyPaper research preprint or website, please cite this record and note that it is not peer reviewed."
+title: "TinyLLM tiếng Việt trên vi điều khiển ESP32-S3: Thực trạng, giới hạn và tiềm năng"
+type: misc
+authors:
+  - family-names: "Ngo-Hoang"
+    given-names: "Dai-Long"
+date-released: 2026-11-03
+url: "https://github.com/xulytiengviet/Tinypaper"
+repository-code: "https://github.com/xulytiengviet/Tinypaper"
+abstract: "Critical narrative review and proposed VN-MCU-LM benchmark for Vietnamese tiny language models on ESP32-S3; no new hardware measurements claimed."
+keywords:
+  - TinyLLM
+  - Vietnamese
+  - ESP32-S3
+  - TinyML
+  - quantization
+  - on-device inference
